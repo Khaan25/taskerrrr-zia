@@ -18,7 +18,7 @@ type PageHeaderProps = ComponentProps<'div'> & {
 export default function PageHeader({ children, title, titleClassName, description, descriptionClassName, className, ...props }: PageHeaderProps) {
   return (
     <>
-      <div className={cn('flex items-center justify-between gap-4', className)} {...props}>
+      <div className={cn('flex w-full items-center justify-between gap-4', className)} {...props}>
         <div>
           <Heading level={2} className={titleClassName}>
             {title}
