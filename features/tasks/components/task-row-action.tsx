@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 
 import { Task } from '@/lib/types'
-import { useLocalStorage } from '@/hooks/use-localstorage'
+import { useTasks } from '@/hooks/use-tasks'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, dropdownMenuItemClassName, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
@@ -15,7 +15,7 @@ type TaskRowActionProps = {
 }
 
 export default function TaskRowAction({ task }: TaskRowActionProps) {
-  const { removeTask } = useLocalStorage()
+  const { removeTask } = useTasks()
   const [open, setOpen] = useState(false)
 
   function handleDelete() {

@@ -3,13 +3,13 @@
 import { tasks } from '@/tasks'
 import { Info } from 'lucide-react'
 
-import { useLocalStorage } from '@/hooks/use-localstorage'
+import { useTasks } from '@/hooks/use-tasks'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { Button } from './ui/button'
 
 export default function SeedButton() {
-  const { addTask } = useLocalStorage()
+  const { addTask } = useTasks()
 
   function SeedTasks() {
     // Convert tasks array to string and store in localStorage

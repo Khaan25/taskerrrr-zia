@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 import { Task, TASK_PRIORITY, TASK_STATUS, TaskFormValues } from '@/lib/types'
 import { generateId } from '@/lib/utils'
-import { useLocalStorage } from '@/hooks/use-localstorage'
+import { useTasks } from '@/hooks/use-tasks'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -27,7 +27,7 @@ type TaskFormProps = {
 
 export function TaskForm({ task, onSuccess }: TaskFormProps) {
   const [isPending, startTransition] = useTransition()
-  const { addTask, updateTask } = useLocalStorage()
+  const { addTask, updateTask } = useTasks()
 
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
