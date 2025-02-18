@@ -17,7 +17,7 @@ export const useTasks = () => {
     addValue(updatedTasks)
   }
 
-  const deleteTasks = (updatedValue: Task[]) => {
+  const updateTasks = (updatedValue: Task[]) => {
     addValue(updatedValue)
   }
 
@@ -30,7 +30,7 @@ export const useTasks = () => {
     addTask,
     removeTask,
     updateTask,
-    deleteTasks,
+    updateTasks,
     clearData,
   }
 }

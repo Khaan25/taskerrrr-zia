@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Trash2 } from 'lucide-react'
 
-import { TASK_PRIORITY, TASK_STATUS } from '@/lib/types'
+import { TASK_PRIORITY, TASK_STATUS, TaskPriority, TaskStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { useTasks } from '@/hooks/use-tasks'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
@@ -13,6 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 import { TableSortButton } from './table-sort-button'
+import { TaskBulkEditDialog } from './task-bulk-edit-dialog'
 import { TaskFilterBar } from './task-filter-bar'
 import TaskRowAction from './task-row-action'
 
@@ -20,7 +21,7 @@ type SortField = 'title' | 'status' | 'priority'
 type SortDirection = 'asc' | 'desc' | null
 
 export default function TaskList() {
-  const { tasks , deleteTasks} = useTasks()
+  const { tasks, updateTasks } = useTasks()
   const [searchQuery, setSearchQuery] = useState('')
   const [sortField, setSortField] = useState<SortField | null>(null)
   const [sortDirection, setSortDirection] = useState<SortDirection>(null)
@@ -53,9 +54,19 @@ export default function TaskList() {
 
   const handleBulkDelete = () => {
     const remainingTasks = tasks.filter((task) => !selectedTasks.includes(task.id))
-    deleteTasks(remainingTasks)
+    updateTasks(remainingTasks)
     setSelectedTasks([])
     setShowDeleteDialog(false)
+  }
+
+  const handleBulkUpdateStatus = (status: TaskStatus) => {
+    const updatedTasks = tasks.map((task) => (selectedTasks.includes(task.id) ? { ...task, status } : task))
+    updateTasks(updatedTasks)
+  }
+
+  const handleBulkUpdatePriority = (priority: TaskPriority) => {
+    const updatedTasks = tasks.map((task) => (selectedTasks.includes(task.id) ? { ...task, priority } : task))
+    updateTasks(updatedTasks)
   }
 
   const filteredAndSortedTasks =
@@ -165,6 +176,7 @@ export default function TaskList() {
               <span className="text-sm font-medium">
                 {selectedTasks.length} {selectedTasks.length === 1 ? 'task' : 'tasks'} selected
               </span>
+              <TaskBulkEditDialog selectedCount={selectedTasks.length} onUpdateStatus={handleBulkUpdateStatus} onUpdatePriority={handleBulkUpdatePriority} />
               <Button variant="destructive" size="sm" onClick={() => setShowDeleteDialog(true)} className="gap-2">
                 <Trash2 className="size-4" />
                 Delete
