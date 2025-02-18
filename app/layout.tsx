@@ -25,7 +25,7 @@ export default function Layout({
   return (
     <html lang="en">
       <body className={cn('!mr-0 min-h-screen bg-background font-sans antialiased', GeistSans.variable, GeistMono.variable)} suppressHydrationWarning={true}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <TopLoadingBar />
           <RootLayout>{children}</RootLayout>
           <Toaster richColors closeButton className="font-manrope z-[1000]" />
