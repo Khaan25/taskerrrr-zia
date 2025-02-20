@@ -37,3 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 - [ ] Fix if bulk delete at last page, it should go 1 page back  
+- [ ] use useMemo(), useCallback() for improving performance

@@ -1,26 +1,15 @@
-import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd'
+import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 
-import { TASK_PRIORITY, TaskPriority } from '@/lib/types'
+import { TaskPriority } from '@/lib/types'
+import { groupTasksByPriority } from '@/lib/utils'
 import { useTasks } from '@/hooks/use-tasks'
-import { Badge } from '@/components/ui/badge'
 
-import { KanbanCard } from './kanban-card'
-import TaskDialog from './task-dialog'
+import KanbanBoardColumns from './kanban/kanban-board-columns'
 
 export default function KanbanBoard() {
   const { tasks, updateTasks } = useTasks()
 
-  // Group tasks by priority
-  const groupedTasks = tasks.reduce(
-    (acc, task) => {
-      if (!acc[task.priority]) {
-        acc[task.priority] = []
-      }
-      acc[task.priority].push(task)
-      return acc
-    },
-    {} as Record<TaskPriority, typeof tasks>
-  )
+  const groupedTasks = groupTasksByPriority(tasks)
 
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result
@@ -60,40 +49,7 @@ export default function KanbanBoard() {
   return (
     <div className="mt-8">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-5 gap-4">
-          {Object.entries(TASK_PRIORITY).map(([priority, label]) => (
-            <div key={priority} className="flex flex-col rounded-lg border bg-card text-card-foreground shadow-sm">
-              <div className="flex items-center justify-between border-b p-4">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">{label}</h3>
-                  <Badge variant="outline" className="ml-2">
-                    {groupedTasks[priority as TaskPriority]?.length ?? 0}
-                  </Badge>
-                </div>
-                <TaskDialog>
-                  <button className="text-sm text-muted-foreground hover:text-foreground">Add Task</button>
-                </TaskDialog>
-              </div>
-
-              <Droppable droppableId={priority}>
-                {(provided, snapshot) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps} className={`flex-1 space-y-2 p-4 transition-colors ${snapshot.isDraggingOver ? 'bg-muted/50' : ''}`}>
-                    {groupedTasks[priority as TaskPriority]?.map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id} index={index}>
-                        {(provided, snapshot) => (
-                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={`${snapshot.isDragging ? 'opacity-50' : ''}`}>
-                            <KanbanCard task={task} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          ))}
-        </div>
+        <KanbanBoardColumns groupedTasks={groupedTasks} />
       </DragDropContext>
     </div>
   )
