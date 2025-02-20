@@ -1,16 +1,17 @@
 'use client'
 
 import { useTasks } from '@/hooks/use-tasks'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { Icons } from '@/components/icons'
 
 import { BulkActionBar } from './bulk-action-bar'
+import DeleteDialog from './dialogs/delete-dialog'
 import { TaskFilterBar } from './task-filter-bar'
 import { TaskPaginationControls } from './task-pagination-controls'
 import { TaskTable } from './task-table'
 import { useTaskListLogic } from './use-task-list-logic'
 
 export default function TaskList() {
-  const { tasks, updateTasks } = useTasks()
+  const { tasks } = useTasks()
   const {
     searchQuery,
     statusFilter,
@@ -34,10 +35,15 @@ export default function TaskList() {
     setCurrentPage,
     sortField,
     sortDirection,
-  } = useTaskListLogic(tasks, updateTasks)
+  } = useTaskListLogic()
 
   if (!tasks || tasks.length === 0) {
-    return <div className="mt-4 text-center text-muted-foreground">No tasks yet. Create one to get started.</div>
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-dashed border-border p-12 sm:p-16">
+        <Icons.empty className="size-48" />
+        <div className="mt-4 text-center text-muted-foreground">No tasks yet. Create one to get started.</div>
+      </div>
+    )
   }
 
   return (
@@ -70,22 +76,16 @@ export default function TaskList() {
 
           <BulkActionBar selectedTasks={selectedTasks} onUpdateStatus={handleBulkUpdateStatus} onUpdatePriority={handleBulkUpdatePriority} onDeleteClick={() => setShowDeleteDialog(true)} />
 
-          <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete {selectedTasks.length} {selectedTasks.length === 1 ? 'task' : 'tasks'}.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleBulkDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          {/* Delete Dialog when clicked Delete button in BulkActionBar */}
+          <DeleteDialog
+            open={showDeleteDialog}
+            onOpenChange={setShowDeleteDialog}
+            onClick={handleBulkDelete}
+            content={{
+              title: 'Are you absolutely sure?',
+              description: `This action cannot be undone. This will permanently delete ${selectedTasks.length} ${selectedTasks.length === 1 ? 'task' : 'tasks'}.`,
+            }}
+          />
         </>
       )}
     </div>

@@ -32,7 +32,8 @@ export function TaskForm({ task, onSuccess }: TaskFormProps) {
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      title: task?.title ?? '',
+      // title: task?.title ?? '',
+      title: '',
       status: task?.status || 'not_started',
       priority: task?.priority || 'none',
     },

@@ -8,16 +8,19 @@ import { LayoutGrid, List } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PageContainer from '@/components/common/page-container'
 import PageHeader from '@/components/common/page-header'
+import DeleteAllBtn from '@/components/delete-all-btn'
 import SeedButton from '@/components/seed-button'
 
 export default function Page() {
   return (
     <PageContainer>
-      <div className="flex items-center justify-between">
-        <PageHeader title="Tasks" description="Manage all tasks.">
+      <PageHeader title="Tasks" description="Manage all tasks.">
+        <div className="flex items-center gap-4">
+          <DeleteAllBtn />
+          <SeedButton />
           <TaskDialog />
-        </PageHeader>
-      </div>
+        </div>
+      </PageHeader>
 
       <Tabs defaultValue="list">
         <TabsList>
@@ -37,8 +40,6 @@ export default function Page() {
           <KanbanBoard />
         </TabsContent>
       </Tabs>
-
-      <SeedButton />
     </PageContainer>
   )
 }

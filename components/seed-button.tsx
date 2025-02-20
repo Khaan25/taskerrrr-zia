@@ -18,8 +18,6 @@ export default function SeedButton() {
       tasks.forEach((task) => {
         addTask(task)
       })
-
-      // toast.success(`${tasks.length} tasks seeded successfully`)
     } catch (error) {
       toast.error('Failed to seed tasks')
       console.error('Error seeding tasks:', error)
@@ -30,11 +28,11 @@ export default function SeedButton() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={handleSeedTasks} variant="secondary" size="icon" className="fixed bottom-4 right-4 rounded-full">
+          <Button onClick={handleSeedTasks} variant="secondary" size="icon" className="rounded-full">
             <Info />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="top" align="end" sideOffset={40}>
+        <TooltipContent side="bottom">
           <p>Seed tasks</p>
         </TooltipContent>
       </Tooltip>

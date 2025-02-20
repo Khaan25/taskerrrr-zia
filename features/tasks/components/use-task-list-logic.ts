@@ -1,27 +1,40 @@
 import { useState } from 'react'
 
-import { Task, TaskPriority, TaskStatus } from '@/lib/types'
-
-type SortField = 'title' | 'status' | 'priority'
-type SortDirection = 'asc' | 'desc' | null
+import { SortDirection, SortField, TaskPriority, TaskStatus } from '@/lib/types'
+import { useTasks } from '@/hooks/use-tasks'
 
 const ITEMS_PER_PAGE = 10
 
-// eslint-disable-next-line no-unused-vars
-export function useTaskListLogic(tasks: Task[], updateTasks: (tasks: Task[]) => void) {
+export function useTaskListLogic() {
+  const { tasks, updateTasks } = useTasks()
+
+  // We could also debounce this
   const [searchQuery, setSearchQuery] = useState('')
+
+  // Sorting - title, status, priority
   const [sortField, setSortField] = useState<SortField | null>(null)
   const [sortDirection, setSortDirection] = useState<SortDirection>(null)
-  const [statusFilter, setStatusFilter] = useState<string | null>(null)
-  const [priorityFilter, setPriorityFilter] = useState<string | null>(null)
+
+  // Filtering - status, priority
+  const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(null)
+  const [priorityFilter, setPriorityFilter] = useState<TaskPriority | null>(null)
+
+  // Selection - selected tasks
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
+
+  // Delete dialog - show delete dialog
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
+  // Sorting - title, status, priority
   const handleSort = (field: SortField) => {
     setCurrentPage(1)
+
+    // If the field is the same as the current sort field, toggle the sort direction
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : sortDirection === 'desc' ? null : 'asc')
+
+      // If the sort direction is descending, reset the sort field
       if (sortDirection === 'desc') setSortField(null)
     } else {
       setSortField(field)
@@ -29,10 +42,12 @@ export function useTaskListLogic(tasks: Task[], updateTasks: (tasks: Task[]) => 
     }
   }
 
+  // Selection - selected tasks
   const handleSelectTask = (taskId: string) => {
     setSelectedTasks((prev) => (prev.includes(taskId) ? prev.filter((id) => id !== taskId) : [...prev, taskId]))
   }
 
+  // Selection - select all tasks on the current page
   const handleSelectAll = () => {
     // Get the IDs of tasks on the current page
     const currentPageTaskIds = paginatedTasks.map((task) => task.id)
@@ -53,23 +68,29 @@ export function useTaskListLogic(tasks: Task[], updateTasks: (tasks: Task[]) => 
     }
   }
 
+  // Delete dialog - delete selected tasks
   const handleBulkDelete = () => {
     const remainingTasks = tasks.filter((task) => !selectedTasks.includes(task.id))
     updateTasks(remainingTasks)
+
+    // Clear selection and hide delete dialog
     setSelectedTasks([])
     setShowDeleteDialog(false)
   }
 
+  // Bulk update status - update the status of selected tasks
   const handleBulkUpdateStatus = (status: TaskStatus) => {
     const updatedTasks = tasks.map((task) => (selectedTasks.includes(task.id) ? { ...task, status } : task))
     updateTasks(updatedTasks)
   }
 
+  // Bulk update priority - update the priority of selected tasks
   const handleBulkUpdatePriority = (priority: TaskPriority) => {
     const updatedTasks = tasks.map((task) => (selectedTasks.includes(task.id) ? { ...task, priority } : task))
     updateTasks(updatedTasks)
   }
 
+  // Filtering - change filters
   const handleFilterChange = () => {
     setCurrentPage(1)
   }
@@ -77,18 +98,27 @@ export function useTaskListLogic(tasks: Task[], updateTasks: (tasks: Task[]) => 
   const filteredAndSortedTasks =
     tasks
       ?.filter((task) => {
+        // If the task is not defined, return false
         if (!task) return false
+
+        // If the search query is not empty and the task title does not include the search query, return false
         if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
           return false
         }
+
+        // If the status filter is not empty and the task status does not match the status filter, return false
         if (statusFilter && task.status !== statusFilter) {
           return false
         }
+
+        // If the priority filter is not empty and the task priority does not match the priority filter, return false
         if (priorityFilter && task.priority !== priorityFilter) {
           return false
         }
+
         return true
       })
+      // Sort the tasks based on the sort field and direction
       .sort((a, b) => {
         if (!sortField || !sortDirection) return 0
         const aValue = a[sortField]
@@ -96,6 +126,7 @@ export function useTaskListLogic(tasks: Task[], updateTasks: (tasks: Task[]) => 
         return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
       }) || []
 
+  // Get the tasks for the current page
   const paginatedTasks = filteredAndSortedTasks.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
   return {

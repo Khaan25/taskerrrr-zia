@@ -11,7 +11,9 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, D
 
 export type DeleteSheetProps = {
   children?: ReactNode
+
   trigger: ReactNode
+
   content?: {
     title: string
     description?: string

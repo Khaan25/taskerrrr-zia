@@ -1,7 +1,6 @@
-import { Edit } from 'lucide-react'
+import { ReactNode } from 'react'
 
 import { TASK_PRIORITY, TASK_STATUS, TaskPriority, TaskStatus } from '@/lib/types'
-import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
@@ -13,17 +12,14 @@ interface TaskBulkEditDialogProps {
 
   // eslint-disable-next-line no-unused-vars
   onUpdatePriority: (priority: TaskPriority) => void
+
+  children: ReactNode
 }
 
-export function TaskBulkEditDialog({ selectedCount, onUpdateStatus, onUpdatePriority }: TaskBulkEditDialogProps) {
+export function TaskBulkEditDialog({ selectedCount, onUpdateStatus, onUpdatePriority, children }: TaskBulkEditDialogProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="secondary" size="sm" className="gap-2">
-          <Edit className="size-4" />
-          Edit
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

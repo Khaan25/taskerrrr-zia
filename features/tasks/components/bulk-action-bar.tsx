@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { Edit, Trash2 } from 'lucide-react'
 
 import { TaskPriority, TaskStatus } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -19,15 +19,20 @@ interface BulkActionBarProps {
 export function BulkActionBar({ selectedTasks, onUpdateStatus, onUpdatePriority, onDeleteClick }: BulkActionBarProps) {
   if (selectedTasks.length === 0) return null
 
+  const selectedTasksText = selectedTasks.length + ' ' + (selectedTasks.length === 1 ? 'task' : 'tasks')
+
   return (
     <div className="fixed bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-lg border bg-background px-4 py-2 shadow-lg">
-      <span className="text-sm font-medium">
-        {selectedTasks.length} {selectedTasks.length === 1 ? 'task' : 'tasks'} selected
-      </span>
-      <TaskBulkEditDialog selectedCount={selectedTasks.length} onUpdateStatus={onUpdateStatus} onUpdatePriority={onUpdatePriority} />
+      <TaskBulkEditDialog selectedCount={selectedTasks.length} onUpdateStatus={onUpdateStatus} onUpdatePriority={onUpdatePriority}>
+        <Button variant="secondary" size="sm" className="gap-2">
+          <Edit className="size-4" />
+          Edit {selectedTasksText}
+        </Button>
+      </TaskBulkEditDialog>
+
       <Button variant="destructive" size="sm" onClick={onDeleteClick} className="gap-2">
         <Trash2 className="size-4" />
-        Delete
+        Delete {selectedTasksText}
       </Button>
     </div>
   )

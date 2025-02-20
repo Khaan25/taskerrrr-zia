@@ -23,3 +23,6 @@ export type Task = {
 }
 
 export type TaskFormValues = Omit<Task, 'id'>
+
+export type SortField = 'title' | 'status' | 'priority'
+export type SortDirection = 'asc' | 'desc' | null

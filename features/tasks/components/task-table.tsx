@@ -1,6 +1,6 @@
-import { Task } from '@/lib/types'
+import { SortDirection, SortField, Task } from '@/lib/types'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 import { TableSortButton } from './table-sort-button'
 import { TaskPriorityBadge } from './task-priority-badge'
@@ -12,13 +12,13 @@ interface TaskTableProps {
   selectedTasks: string[]
 
   // eslint-disable-next-line no-unused-vars
-  onSort: (field: 'title' | 'status' | 'priority') => void
+  onSort: (field: SortField) => void
 
   // eslint-disable-next-line no-unused-vars
   onSelectTask: (taskId: string) => void
   onSelectAll: () => void
-  sortField: 'title' | 'status' | 'priority' | null
-  sortDirection: 'asc' | 'desc' | null
+  sortField: SortField | null
+  sortDirection: SortDirection
 }
 
 export function TaskTable({ paginatedTasks, selectedTasks, onSort, onSelectTask, onSelectAll, sortField, sortDirection }: TaskTableProps) {
@@ -27,7 +27,6 @@ export function TaskTable({ paginatedTasks, selectedTasks, onSort, onSelectTask,
 
   return (
     <Table>
-      <TableCaption>A list of your tasks</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px]">
@@ -51,7 +50,7 @@ export function TaskTable({ paginatedTasks, selectedTasks, onSort, onSelectTask,
             <TableCell>
               <Checkbox checked={selectedTasks.includes(task.id)} onCheckedChange={() => onSelectTask(task.id)} />
             </TableCell>
-            <TableCell>{task.title}</TableCell>
+            <TableCell className="text-nowrap">{task.title}</TableCell>
             <TableCell>
               <TaskStatusBadge status={task.status} />
             </TableCell>

@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 interface TableFilterDropdownProps {
   options: { label: string; value: string }[]
   selectedValue: string | null
+
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string | null) => void
 }
