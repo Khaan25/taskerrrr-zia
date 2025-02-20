@@ -67,15 +67,10 @@ With more time, the following improvements could be made:
 
 - Custom table implementation instead of using TanStack Table for better control over functionality
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Interesting things
+- Using React Scan to monitor performance
+- Using React Query to improve performance
+- Using Custom Hooks
+- Modular code structure
+- Using Features folder structure
+- Yeah, it's ready for large scale after we fix above known issues.

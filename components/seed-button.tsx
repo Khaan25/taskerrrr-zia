@@ -28,8 +28,8 @@ export default function SeedButton() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={handleSeedTasks} variant="secondary" size="icon" className="rounded-full">
-            <Info />
+          <Button onClick={handleSeedTasks} variant="secondary">
+            <Info /> Seed Tasks
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
