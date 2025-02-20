@@ -2,6 +2,7 @@
 
 import { tasks } from '@/tasks'
 import { Info } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { useTasks } from '@/hooks/use-tasks'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -11,20 +12,25 @@ import { Button } from './ui/button'
 export default function SeedButton() {
   const { addTask } = useTasks()
 
-  function SeedTasks() {
-    // Convert tasks array to string and store in localStorage
+  function handleSeedTasks() {
+    try {
+      // Add each task from the seed data
+      tasks.forEach((task) => {
+        addTask(task)
+      })
 
-    for (const task of tasks) {
-      addTask(task)
+      // toast.success(`${tasks.length} tasks seeded successfully`)
+    } catch (error) {
+      toast.error('Failed to seed tasks')
+      console.error('Error seeding tasks:', error)
     }
-    console.log('✅ Tasks seeded successfully')
   }
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={SeedTasks} variant="secondary" size="icon" className="absolute bottom-4 right-4 rounded-full">
+          <Button onClick={handleSeedTasks} variant="secondary" size="icon" className="fixed bottom-4 right-4 rounded-full">
             <Info />
           </Button>
         </TooltipTrigger>

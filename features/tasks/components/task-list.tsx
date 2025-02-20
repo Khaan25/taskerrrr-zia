@@ -29,8 +29,11 @@ export default function TaskList() {
   const [priorityFilter, setPriorityFilter] = useState<string | null>(null)
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
 
   const handleSort = (field: SortField) => {
+    setCurrentPage(1)
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : sortDirection === 'desc' ? null : 'asc')
       if (sortDirection === 'desc') setSortField(null)
@@ -69,6 +72,10 @@ export default function TaskList() {
     updateTasks(updatedTasks)
   }
 
+  const handleFilterChange = () => {
+    setCurrentPage(1)
+  }
+
   const filteredAndSortedTasks =
     tasks
       ?.filter((task) => {
@@ -98,6 +105,27 @@ export default function TaskList() {
         return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
       }) || []
 
+  // Add pagination calculation
+  const totalPages = Math.ceil(filteredAndSortedTasks.length / itemsPerPage)
+  const paginatedTasks = filteredAndSortedTasks.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
+  // Add pagination controls component
+  const PaginationControls = () => (
+    <div className="mt-4 flex items-center justify-between">
+      <div className="text-sm text-muted-foreground">
+        Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredAndSortedTasks.length)} of {filteredAndSortedTasks.length}
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+          Previous
+        </Button>
+        <Button variant="outline" size="sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+          Next
+        </Button>
+      </div>
+    </div>
+  )
+
   if (!tasks || tasks.length === 0) {
     return <div className="mt-4 text-center text-muted-foreground">No tasks yet. Create one to get started.</div>
   }
@@ -111,6 +139,7 @@ export default function TaskList() {
         onSearchChange={setSearchQuery}
         onStatusChange={setStatusFilter}
         onPriorityChange={setPriorityFilter}
+        onFilterChange={handleFilterChange}
       />
       {filteredAndSortedTasks.length === 0 ? (
         <div className="mt-4 text-center text-muted-foreground">No tasks match the current filters</div>
@@ -136,7 +165,7 @@ export default function TaskList() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAndSortedTasks.map((task) => (
+              {paginatedTasks.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell>
                     <Checkbox checked={selectedTasks.includes(task.id)} onCheckedChange={() => handleSelectTask(task.id)} />
@@ -170,6 +199,8 @@ export default function TaskList() {
               ))}
             </TableBody>
           </Table>
+
+          <PaginationControls />
 
           {selectedTasks.length > 0 && (
             <div className="fixed bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-lg border bg-background px-4 py-2 shadow-lg">
