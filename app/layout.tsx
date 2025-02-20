@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 import React from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 
@@ -35,6 +36,8 @@ export default function Layout({
           <RootLayout>{children}</RootLayout>
           <Toaster richColors closeButton className="font-manrope z-[1000]" />
         </ThemeProvider>
+
+        <Analytics />
       </body>
     </html>
   )
