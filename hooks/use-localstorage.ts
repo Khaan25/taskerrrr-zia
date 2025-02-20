@@ -1,6 +1,10 @@
+/* eslint-disable no-unused-vars */
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useEventCallback, useEventListener } from 'usehooks-ts'
+
+// Took this from usehooks-ts
+// https://usehooks-ts.com/react-hook/use-local-storage
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
