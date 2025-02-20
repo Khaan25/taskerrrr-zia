@@ -16,6 +16,7 @@ interface TaskFilterBarProps {
   onStatusChange: (value: string | null) => void
   // eslint-disable-next-line no-unused-vars
   onPriorityChange: (value: string | null) => void
+  onFilterChange: () => void
 }
 
 export function TaskFilterBar({ searchQuery, statusFilter, priorityFilter, onSearchChange, onStatusChange, onPriorityChange }: TaskFilterBarProps) {
