@@ -47,10 +47,8 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div className="mt-8">
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <KanbanBoardColumns groupedTasks={groupedTasks} />
-      </DragDropContext>
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <KanbanBoardColumns groupedTasks={groupedTasks} />
+    </DragDropContext>
   )
 }

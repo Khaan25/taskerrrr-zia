@@ -50,6 +50,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Remaining tasks
 - Custom Fields Support (didn't do cuz of time but have action plan - see custom-field-implementation.md)
+- Undo/Redo feature (didn't do cuz of time - save the delete item in new array (plus index) and restore it back at original index)
 
 ## Challenging Parts
 
@@ -60,6 +61,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 With more time, the following improvements could be made:
 - Performance optimization
 - Enhanced UX for search, sorting, filtering, and pagination
+- 404 page (low priority)
 
 ## Trade-offs
 
