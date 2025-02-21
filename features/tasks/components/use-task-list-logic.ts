@@ -101,9 +101,13 @@ export function useTaskListLogic() {
         // If the task is not defined, return false
         if (!task) return false
 
-        // If the search query is not empty and the task title does not include the search query, return false
-        if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
-          return false
+        // If the search query is not empty, perform case-insensitive search
+        if (searchQuery) {
+          const normalizedTitle = task.title.toLowerCase().trim()
+          const normalizedQuery = searchQuery.toLowerCase().trim()
+
+          // Simple exact match instead of word splitting
+          return normalizedTitle.includes(normalizedQuery)
         }
 
         // If the status filter is not empty and the task status does not match the status filter, return false

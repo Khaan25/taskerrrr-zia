@@ -51,7 +51,7 @@ export function TaskFilterBar({ searchQuery, statusFilter, priorityFilter, onSea
     <div className="mb-4 flex items-center gap-0.5">
       <div className="relative max-w-sm flex-1">
         <Search className="absolute left-2.5 top-3 size-4 text-muted-foreground" />
-        <Input placeholder="Search task titles..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} className="pl-8" />
+        <Input placeholder="Search task..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} className="pl-8" />
       </div>
 
       <div className="flex items-center gap-0.5">
