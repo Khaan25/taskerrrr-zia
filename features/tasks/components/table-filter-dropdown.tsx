@@ -6,12 +6,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 interface TableFilterDropdownProps {
   options: { label: string; value: string }[]
   selectedValue: string | null
-
+  defaultLabel?: string
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string | null) => void
 }
 
-export function TableFilterDropdown({ options, selectedValue, onChange }: TableFilterDropdownProps) {
+export function TableFilterDropdown({ options, selectedValue, onChange, defaultLabel = 'Filter' }: TableFilterDropdownProps) {
   const selectedOption = options.find((option) => option.value === selectedValue)
 
   return (
@@ -19,7 +19,7 @@ export function TableFilterDropdown({ options, selectedValue, onChange }: TableF
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className="ml-2">
           <Filter className="mr-2 size-4" />
-          {selectedOption ? selectedOption.label : 'Filter'}
+          {selectedOption ? selectedOption.label : defaultLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
